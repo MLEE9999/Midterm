@@ -76,8 +76,7 @@
 
 </div>
 <script>
-    var a,b,c,d,e;
-    var f;
+    var a,b,c,d,e,f;
     
     if (navigator.geolocation) { // GPS를 지원하면
     navigator.geolocation.getCurrentPosition(function(position) {
@@ -92,7 +91,7 @@
       a= data.main.temp; // 기온
       b= data.wind.speed; // 풍속
       c= data.main.humidity; // 습도
-      f= data.name;
+      f= data.name; // 지역이름
     }
   });
     }, function(error) {
@@ -124,9 +123,7 @@ const getJSON = function(url, callback) {
     function getLocation(){
       document.getElementById("test").innerText=d+" "+e+" "+f;
     }
-
   function qp(){
-    //var a=document.getElementById("label-containe").child    ;
     document.getElementById("test").innerText=a+" "+b+" "+c;
     }
 </script>

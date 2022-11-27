@@ -66,8 +66,9 @@
 <div>
     What today Weather?
 </div>
-<button type="button" onclick="qp()">weather</button>
-<button type="button" onclick="getLocation()">GPS</button>
+<button type="button" onclick="qp()">온도</button>
+<button type="button" onclick="getLocation()">위도경도받아오기</button>
+<button type="button" onclick="getLocation_()">GPS정보받아오기</button>
 <div>
 <div id="test">a</div>
 
@@ -77,19 +78,8 @@
     
     if (navigator.geolocation) { // GPS를 지원하면
     navigator.geolocation.getCurrentPosition(function(position) {
-      //document.getElementById("test").innerText=position.coords.latitude + ' ' + position.coords.longitude;
       lat= position.coords.latitude // 위도
       lon= position.coords.longitude // 경도;
-      getJSON('http://api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+lon+'&appid=4375227894b706fbc4e46675bba7a98a', // 각각의 위도 경도를 입력하여 해당 위치의 날씨정보를 가져옴
-      //1eb1d18602c0e2dde562cdc2005a4495
-  function (err, data) {
-    if(err !== null) {
-      alert('error' + err);
-    } else {
-      temp= data.main.temp; // 기온
-      city= data.name; // 지역이름
-    }
-  });
     }, function(error) {
       console.error(error);
     }, {
@@ -115,11 +105,28 @@ const getJSON = function(url, callback) {
     xhr.send();
   };
   
-   
+   /*if(navigator.geolocation){
+    document.getElementById('test').innerText="와우";
+   }else{
+    alert("GPS를 지원하지 않습니다");
+   }*/
+   function getLocation_(){
+   getJSON('http://api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+lon+'&appid=4375227894b706fbc4e46675bba7a98a', // 각각의 위도 경도를 입력하여 해당 위치의 날씨정보를 가져옴
+      //1eb1d18602c0e2dde562cdc2005a4495
+  function (err, data) {
+    if(err !== null) {
+      alert('error' + err); // 넣은 값이 오류가 생길 시 에러코드와 함께 문구발생
+    } else {
+      temp= data.main.temp; // 기온
+      city= data.name; // 지역이름
+    }
+  });
+}
     function getLocation(){
-      document.getElementById("test").innerText="위도 : "+lat+", 경도: "+lon+", 이름 : "+city;
+      
     }
   function qp(){
-    document.getElementById("test").innerText="기온 : "+temp;
+    
+    document.getElementById("test").innerText="기온 : "+temp+" 위도 : "+lat+", 경도: "+lon+", 이름 : "+city;
     }
 </script>

@@ -2,7 +2,7 @@
 <button type="button" onclick="init()">Start</button>
 <div id="webcam-container"></div>
 <div id="label-container"></div>
-<div id="label-containe"></div>
+<div id="result"></div>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
 <script type="text/javascript">
@@ -10,7 +10,7 @@
     // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
 
     // the link to your model provided by Teachable Machine export panel
-    const URL = "./a/";
+    const URL = "./a/"; // 모델위치를 설정하는 부분으로 교육이 완료되면 설정예정
 
     let model, webcam, labelContainer, maxPredictions;
 
@@ -50,36 +50,31 @@
     // run the webcam image through the image model
     async function predict() {
         // predict can take in an image, video or canvas html element
-        const prediction = await model.predict(webcam.canvas);
-        for (let i = 0; i < maxPredictions; i++) {
+        const prediction = await model.predict(webcam.canvas); 
+        for (let i = 0; i < maxPredictions; i++) {//가중치를 계속적으로 받아옴
             const classPrediction =
                prediction[i].className + ": " + prediction[i].probability.toFixed(2);
-            labelContainer.childNodes[i].innerHTML = classPrediction;  
+            //labelContainer.childNodes[i].innerHTML = classPrediction;  
         }
-        if(prediction[0].probability<prediction[1].probability){
-            document.getElementById("label-containe").innerHTML ='gin';
+        if(prediction[0].probability<prediction[1].probability){ // 가중치가 어느 쪽이 높은지 계산
+            document.getElementById("result").innerHTML ='긴팔';
         }else{
-            document.getElementById("label-containe").innerHTML ='ban';
+            document.getElementById("result").innerHTML ='반팔';
         }
     }
 </script>
-<div>
-    What today Weather?
-</div>
-<!--<button type="button" onclick="qp()">온도</button>
-<button type="button" onclick="qq()">qq실행</button>
+
+<!--
 <button type="button" onclick="getLocation()">위도경도받아오기</button>
 <button type="button" onclick="getLocation_()">GPS정보받아오기</button>
-<button type="button" onclick="getLocation__()">GPS정보받아오기(위치로)</button>-->
-<div>
-<div id="test"> </div>
-<!--<div id="ima">실행순서 : 위도경도받아오기 -> GPS정보받아오기 -> 온도</div>-->
-</div>
+<div id="ima">실행순서 : 위도경도받아오기 -> GPS정보받아오기 -> 온도</div>
+-->
+<div>[ Weather ]</div>
+<div id="information"> </div>
 
 <script>
     var temp, city, lat, lon, name, temp_max, temp_min;
-    
-    
+
 const getJSON = function(url, callback) {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
@@ -94,8 +89,10 @@ const getJSON = function(url, callback) {
     };
     xhr.send();
   };
-  
-   function getLocation_(){ // 위도경도로 검색
+// GPS를 이용하여 위도경도를 받아오는 방식_ 정확도가 너무 떨어져서 보류
+  //http://api.openweathermap.org/data/2.5/weather?lat=&lon=&appid=4375227894b706fbc4e46675bba7a98a
+/*
+  function getLocation_(){ // 위도경도로 검색
    getJSON('http://api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+lon+'&appid=4375227894b706fbc4e46675bba7a98a', // 각각의 위도 경도를 입력하여 해당 위치의 날씨정보를 가져옴
   function (err, data) {
     if(err !== null) {
@@ -106,7 +103,7 @@ const getJSON = function(url, callback) {
     }
   });
 }
-    function getLocation(){ //위도경도 받아오기
+    function getLocation(){ //위도경도 받아오기 
       if (navigator.geolocation) { // GPS를 지원하면
     navigator.geolocation.watchPosition(function(position) {
       lat= position.coords.latitude // 위도
@@ -122,14 +119,11 @@ const getJSON = function(url, callback) {
     alert('GPS를 지원하지 않습니다');
   }
     }
-
-  function qp(){
-    document.getElementById("test").innerText="기온 : "+Math.round(temp*10)/10+" 위도 : "+lat+", 경도: "+lon+", 이름 : "+city;
-   // document.getElementById("ima").innerHTML = "<img src=별빛.jpg>";
-    }
+*/
+ 
   //http://api.openweathermap.org/data/2.5/weather?q=asan&appid=4375227894b706fbc4e46675bba7a98a&units=metric
-  function qq(name){
-    getJSON('http://api.openweathermap.org/data/2.5/weather?q='+name+'&appid=4375227894b706fbc4e46675bba7a98a&units=metric', // 각각의 위도 경도를 입력하여 해당 위치의 날씨정보를 가져옴
+  function service(name){ // 위치를 입력받고 해당 위치의 정보 제공
+    getJSON('http://api.openweathermap.org/data/2.5/weather?q='+name+'&appid=4375227894b706fbc4e46675bba7a98a&units=metric', // 도시명을 입력하여 해당 도시의 날씨정보를 가져옴
   function (err, data) {
     if(err !== null) {
       alert('error' + err); // 넣은 값이 오류가 생길 시 에러코드와 함께 문구발생
@@ -137,30 +131,33 @@ const getJSON = function(url, callback) {
       temp= data.main.temp; // 기온
       //lat = data.coord.lat;
       //lon = data.coord.lon;
-      temp_max= data.main.temp_max;
-      temp_min= data.main.temp_min;
+      temp_max= data.main.temp_max; // 최고기온
+      temp_min= data.main.temp_min; // 최저기온
       city= data.name; // 지역이름
-      document.getElementById("test").innerText="기온 : "+Math.round(temp*10)/10+" 최고 기온 : "+Math.round(temp_max*10)/10+" 최저 기온 : "+Math.round(temp_min*10)/10+" 이름 : "+city;
+      document.getElementById("information").innerText="기온 : "+Math.round(temp*10)/10 // 화면 출력
+      +"\n최고 기온 : "+Math.round(temp_max*10)/10
+      +"\n최저 기온 : "+Math.round(temp_min*10)/10
+      +"\n도시 명[영문] : "+city;
     }
   });
-    var abc = document.getElementById('abc');
+    var abc = document.getElementById('abc'); // 버튼 입력시 버튼 가리기
     abc.style.visibility="hidden";
   }
 </script>
-<table id="abc">
+<table id="abc"> <!--버튼 테이블-->
   <tr>
-    <td><button type="button" onclick="qq('seoul')">서울</button></td>
-    <td><button type="button" onclick="qq('bucheon')">부천</button></td>
-    <td><button type="button" onclick="qq('pyeongtaek')">평택</button></td>
+    <td><button type="button" onclick="service('seoul')">서울</button></td>
+    <td><button type="button" onclick="service('bucheon')">부천</button></td>
+    <td><button type="button" onclick="service('pyeongtaek')">평택</button></td>
   </tr>
   <tr>
-    <td><button type="button" onclick="qq('busan')">부산</button></td>
-    <td><button type="button" onclick="qq('incheon')">인천</button></td>
-    <td><button type="button" onclick="qq('pohang')">포항</button></td>
+    <td><button type="button" onclick="service('busan')">부산</button></td>
+    <td><button type="button" onclick="service('incheon')">인천</button></td>
+    <td><button type="button" onclick="service('pohang')">포항</button></td>
   </tr>
   <tr>
-    <td><button type="button" onclick="qq('cheonan')">천안</button></td>
-    <td><button type="button" onclick="qq('asan')">아산</button></td>
-    <td><button type="button" onclick="qq('gongju')">공주</button></td>
+    <td><button type="button" onclick="service('cheonan')">천안</button></td>
+    <td><button type="button" onclick="service('asan')">아산</button></td>
+    <td><button type="button" onclick="service('gongju')">공주</button></td>
   </tr>
 </table>

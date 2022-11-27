@@ -66,13 +66,13 @@
 <div>
     What today Weather?
 </div>
-<button type="button" onclick="qp()">온도</button>
+<!--<button type="button" onclick="qp()">온도</button>
 <button type="button" onclick="qq()">qq실행</button>
 <button type="button" onclick="getLocation()">위도경도받아오기</button>
 <button type="button" onclick="getLocation_()">GPS정보받아오기</button>
-<button type="button" onclick="getLocation__()">GPS정보받아오기(위치로)</button>
+<button type="button" onclick="getLocation__()">GPS정보받아오기(위치로)</button>-->
 <div>
-<div id="test">a</div>
+<div id="test"> </div>
 <!--<div id="ima">실행순서 : 위도경도받아오기 -> GPS정보받아오기 -> 온도</div>-->
 </div>
 
@@ -95,7 +95,7 @@ const getJSON = function(url, callback) {
     xhr.send();
   };
   
-   function getLocation_(){
+   function getLocation_(){ // 위도경도로 검색
    getJSON('http://api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+lon+'&appid=4375227894b706fbc4e46675bba7a98a', // 각각의 위도 경도를 입력하여 해당 위치의 날씨정보를 가져옴
   function (err, data) {
     if(err !== null) {
@@ -106,7 +106,7 @@ const getJSON = function(url, callback) {
     }
   });
 }
-    function getLocation(){
+    function getLocation(){ //위도경도 받아오기
       if (navigator.geolocation) { // GPS를 지원하면
     navigator.geolocation.watchPosition(function(position) {
       lat= position.coords.latitude // 위도
@@ -123,8 +123,13 @@ const getJSON = function(url, callback) {
   }
     }
 
-    function getLocation__(){
-   getJSON('http://api.openweathermap.org/data/2.5/weather?q='+name+'&appid=4375227894b706fbc4e46675bba7a98a&units=metric', // 각각의 위도 경도를 입력하여 해당 위치의 날씨정보를 가져옴
+  function qp(){
+    document.getElementById("test").innerText="기온 : "+Math.round(temp*10)/10+" 위도 : "+lat+", 경도: "+lon+", 이름 : "+city;
+   // document.getElementById("ima").innerHTML = "<img src=별빛.jpg>";
+    }
+  
+  function qq(a){
+    getJSON('http://api.openweathermap.org/data/2.5/weather?q='+a+'&appid=4375227894b706fbc4e46675bba7a98a&units=metric', // 각각의 위도 경도를 입력하여 해당 위치의 날씨정보를 가져옴
   function (err, data) {
     if(err !== null) {
       alert('error' + err); // 넣은 값이 오류가 생길 시 에러코드와 함께 문구발생
@@ -133,33 +138,27 @@ const getJSON = function(url, callback) {
       lat = data.coord.lat;
       lon = data.coord.lon;
       city= data.name; // 지역이름
+      document.getElementById("test").innerText="기온 : "+Math.round(temp*10)/10+" 위도 : "+lat+", 경도: "+lon+", 이름 : "+city;
     }
   });
-}
-
-  function qp(){
-    document.getElementById("test").innerText="기온 : "+Math.round(temp*10)/10+" 위도 : "+lat+", 경도: "+lon+", 이름 : "+city;
-   // document.getElementById("ima").innerHTML = "<img src=별빛.jpg>";
-    }
-  
-  function qq(a){
-    name=a;
+    var abc = document.getElementById('abc');
+    abc.style.visibility="hidden";
   }
 </script>
-<table>
+<table id="abc">
   <tr>
     <td><button type="button" onclick="qq('seoul')">서울</button></td>
-    <td><button type="button" onclick="qq('asan')">아산</button></td>
+    <td><button type="button" onclick="qq('bucheon')">부천</button></td>
     <td><button type="button" onclick="qq('pyeongtaek')">평택</button></td>
   </tr>
   <tr>
     <td><button type="button" onclick="qq('busan')">부산</button></td>
     <td><button type="button" onclick="qq('incheon')">인천</button></td>
-    <td><button type="button" onclick="qq()">qq실행</button></td>
+    <td><button type="button" onclick="qq('pohang')">포항</button></td>
   </tr>
   <tr>
-    <td><button type="button" onclick="qq()">qq실행</button></td>
-    <td><button type="button" onclick="qq()">qq실행</button></td>
-    <td><button type="button" onclick="qq()">qq실행</button></td>
+    <td><button type="button" onclick="qq('cheonan')">천안</button></td>
+    <td><button type="button" onclick="qq('asan')">아산</button></td>
+    <td><button type="button" onclick="qq('gongju')">공주</button></td>
   </tr>
 </table>

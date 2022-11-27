@@ -71,25 +71,13 @@
 <button type="button" onclick="getLocation_()">GPS정보받아오기</button>
 <div>
 <div id="test">a</div>
-
+<div id="ima">실행순서 : 위도경도받아오기 -> GPS정보받아오기 -> 온도</div>
 </div>
+
 <script>
     var temp, city, lat, lon;
     
-    if (navigator.geolocation) { // GPS를 지원하면
-    navigator.geolocation.getCurrentPosition(function(position) {
-      lat= position.coords.latitude // 위도
-      lon= position.coords.longitude // 경도;
-    }, function(error) {
-      console.error(error);
-    }, {
-      enableHighAccuracy: true, // 배터리를 소모해 더욱 더 정확한 정보 받아옴
-      maximumAge: 0,
-      timeout: Infinity
-    });
-  } else {
-    alert('GPS를 지원하지 않습니다');
-  }
+    
 const getJSON = function(url, callback) {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
@@ -117,16 +105,29 @@ const getJSON = function(url, callback) {
     if(err !== null) {
       alert('error' + err); // 넣은 값이 오류가 생길 시 에러코드와 함께 문구발생
     } else {
-      temp= data.main.temp; // 기온
+      temp= data.main.temp-273; // 기온
       city= data.name; // 지역이름
     }
   });
 }
     function getLocation(){
-      
+      if (navigator.geolocation) { // GPS를 지원하면
+    navigator.geolocation.watchPosition(function(position) {
+      lat= position.coords.latitude // 위도
+      lon= position.coords.longitude // 경도;
+    }, function(error) {
+      console.error(error);
+    }, {
+      enableHighAccuracy: true, // 배터리를 소모해 더욱 더 정확한 정보 받아옴
+      maximumAge: 0,
+      timeout: Infinity
+    });
+  } else {
+    alert('GPS를 지원하지 않습니다');
+  }
     }
-  function qp(){
-    
+  async function qp(){
     document.getElementById("test").innerText="기온 : "+temp+" 위도 : "+lat+", 경도: "+lon+", 이름 : "+city;
+    document.getElementById("ima").innerHTML = "<img src=별빛.jpg>";
     }
 </script>

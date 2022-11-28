@@ -89,6 +89,7 @@ const getJSON = function(url, callback) {
     };
     xhr.send();
   };
+  
 // GPS를 이용하여 위도경도를 받아오는 방식_ 정확도가 너무 떨어져서 보류
   //http://api.openweathermap.org/data/2.5/weather?lat=&lon=&appid=4375227894b706fbc4e46675bba7a98a
 /*
@@ -129,7 +130,7 @@ const getJSON = function(url, callback) {
       alert('error' + err); // 넣은 값이 오류가 생길 시 에러코드와 함께 문구발생
     } else {
       temp= data.main.temp; // 기온
-      //lat = data.coord.lat;
+      //lat = data.coord.lat; // 위도경도를 받아오는 코드인데, 사용보류
       //lon = data.coord.lon;
       temp_max= data.main.temp_max; // 최고기온
       temp_min= data.main.temp_min; // 최저기온

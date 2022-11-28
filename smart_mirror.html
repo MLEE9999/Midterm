@@ -1,164 +1,205 @@
-<div>Teachable Machine Image Model</div>
-<button type="button" onclick="init()">Start</button>
-<div id="webcam-container"></div>
-<div id="label-container"></div>
-<div id="result"></div>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
-<script type="text/javascript">
-    // More API functions here:
-    // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
-
-    // the link to your model provided by Teachable Machine export panel
-    const URL = "./a/"; // 모델위치를 설정하는 부분으로 교육이 완료되면 설정예정
-
-    let model, webcam, labelContainer, maxPredictions;
-
-    // Load the image model and setup the webcam
-    async function init() {
-        const modelURL = URL + "model.json";
-        const metadataURL = URL + "metadata.json";
-
-        // load the model and metadata
-        // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
-        // or files from your local hard drive
-        // Note: the pose library adds "tmImage" object to your window (window.tmImage)
-        model = await tmImage.load(modelURL, metadataURL);
-        maxPredictions = model.getTotalClasses();
-
-        // Convenience function to setup a webcam
-        const flip = true; // whether to flip the webcam
-        webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
-        await webcam.setup(); // request access to the webcam
-        await webcam.play();
-        window.requestAnimationFrame(loop);
-
-        // append elements to the DOM
-        document.getElementById("webcam-container").appendChild(webcam.canvas);
-        labelContainer = document.getElementById("label-container");
-        for (let i = 0; i < maxPredictions; i++) { // and class labels
-            labelContainer.appendChild(document.createElement("div"));
-        }
+<head>
+  <style>
+    @font-face {
+      font-family: maple;
+      src: url(Maplestory\ Light.ttf);
     }
+    body {
+      background-image : url('별빛.jpg');  
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      position: relative;
 
-    async function loop() {
-        webcam.update(); // update the webcam frame
-        await predict();
-        window.requestAnimationFrame(loop);
     }
-
-    // run the webcam image through the image model
-    async function predict() {
-        // predict can take in an image, video or canvas html element
-        const prediction = await model.predict(webcam.canvas); 
-        for (let i = 0; i < maxPredictions; i++) {//가중치를 계속적으로 받아옴
-            const classPrediction =
-               prediction[i].className + ": " + prediction[i].probability.toFixed(2);
-            //labelContainer.childNodes[i].innerHTML = classPrediction;  
-        }
-        if(prediction[0].probability<prediction[1].probability){ // 가중치가 어느 쪽이 높은지 계산
-            document.getElementById("result").innerHTML ='긴팔';
-        }else{
-            document.getElementById("result").innerHTML ='반팔';
-        }
+    .div1{
+      font-family: 'maple', sans-serif;
+      font-size:40;
+      width:800px;
+      height : 500px;
+      background-color: white;
+      
+      position: absolute;
+      top: 30%;
+      left: 30%;
+      margin: -60px 0 0 -60px;
     }
-</script>
-
-<!--
-<button type="button" onclick="getLocation()">위도경도받아오기</button>
-<button type="button" onclick="getLocation_()">GPS정보받아오기</button>
-<div id="ima">실행순서 : 위도경도받아오기 -> GPS정보받아오기 -> 온도</div>
--->
-<div>[ Weather ]</div>
-<div id="information"> </div>
-
-<script>
-    var temp, city, lat, lon, name, temp_max, temp_min;
-
-const getJSON = function(url, callback) {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', url, true);
-    xhr.responseType = 'json';
-    xhr.onload = function() {
-      const status = xhr.status;
-      if(status === 200) {
-        callback(null, xhr.response);
-      } else {
-        callback(status, xhr.response);
-      }
-    };
-    xhr.send();
-  };
+    .div2{
+      color:aqua;
+      position:absolute;
+      top:30%;
+      left:30%;
+    }
+  </style>
   
-// GPS를 이용하여 위도경도를 받아오는 방식_ 정확도가 너무 떨어져서 보류
-  //http://api.openweathermap.org/data/2.5/weather?lat=&lon=&appid=4375227894b706fbc4e46675bba7a98a
-/*
-  function getLocation_(){ // 위도경도로 검색
-   getJSON('http://api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+lon+'&appid=4375227894b706fbc4e46675bba7a98a', // 각각의 위도 경도를 입력하여 해당 위치의 날씨정보를 가져옴
-  function (err, data) {
-    if(err !== null) {
-      alert('error' + err); // 넣은 값이 오류가 생길 시 에러코드와 함께 문구발생
-    } else {
-      temp= data.main.temp-273; // 기온
-      city= data.name; // 지역이름
-    }
-  });
-}
-    function getLocation(){ //위도경도 받아오기 
-      if (navigator.geolocation) { // GPS를 지원하면
-    navigator.geolocation.watchPosition(function(position) {
-      lat= position.coords.latitude // 위도
-      lon= position.coords.longitude // 경도;
-    }, function(error) {
-      console.error(error);
-    }, {
-      enableHighAccuracy: true, // 배터리를 소모해 더욱 더 정확한 정보 받아옴
-      maximumAge: 0,
-      timeout: Infinity
-    });
-  } else {
-    alert('GPS를 지원하지 않습니다');
-  }
-    }
-*/
- 
-  //http://api.openweathermap.org/data/2.5/weather?q=asan&appid=4375227894b706fbc4e46675bba7a98a&units=metric
-  function service(name){ // 위치를 입력받고 해당 위치의 정보 제공
-    getJSON('http://api.openweathermap.org/data/2.5/weather?q='+name+'&appid=4375227894b706fbc4e46675bba7a98a&units=metric', // 도시명을 입력하여 해당 도시의 날씨정보를 가져옴
-  function (err, data) {
-    if(err !== null) {
-      alert('error' + err); // 넣은 값이 오류가 생길 시 에러코드와 함께 문구발생
-    } else {
-      temp= data.main.temp; // 기온
-      //lat = data.coord.lat; // 위도경도를 받아오는 코드인데, 사용보류
-      //lon = data.coord.lon;
-      temp_max= data.main.temp_max; // 최고기온
-      temp_min= data.main.temp_min; // 최저기온
-      city= data.name; // 지역이름
-      document.getElementById("information").innerText="기온 : "+Math.round(temp*10)/10 // 화면 출력
-      +"\n최고 기온 : "+Math.round(temp_max*10)/10
-      +"\n최저 기온 : "+Math.round(temp_min*10)/10
-      +"\n도시 명[영문] : "+city;
-    }
-  });
-    var abc = document.getElementById('abc'); // 버튼 입력시 버튼 가리기
-    abc.style.visibility="hidden";
-  }
-</script>
-<table id="abc"> <!--버튼 테이블-->
-  <tr>
-    <td><button type="button" onclick="service('seoul')">서울</button></td>
-    <td><button type="button" onclick="service('bucheon')">부천</button></td>
-    <td><button type="button" onclick="service('pyeongtaek')">평택</button></td>
-  </tr>
-  <tr>
-    <td><button type="button" onclick="service('busan')">부산</button></td>
-    <td><button type="button" onclick="service('incheon')">인천</button></td>
-    <td><button type="button" onclick="service('pohang')">포항</button></td>
-  </tr>
-  <tr>
-    <td><button type="button" onclick="service('cheonan')">천안</button></td>
-    <td><button type="button" onclick="service('asan')">아산</button></td>
-    <td><button type="button" onclick="service('gongju')">공주</button></td>
-  </tr>
-</table>
+</head>
+<body>
+  <div class="div1">
+    <div class="div2">
+      <div>오늘의 날씨</div>
+      <button type="button" onclick="init()">Start</button>
+      <div id="webcam-container"></div>
+      <div id="label-container"></div>
+      <div id="result"></div>
+      <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+      <script type="text/javascript">
+          // More API functions here:
+          // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
+
+          // the link to your model provided by Teachable Machine export panel
+          const URL = "./a/"; // 모델위치를 설정하는 부분으로 교육이 완료되면 설정예정
+
+          let model, webcam, labelContainer, maxPredictions;
+
+          // Load the image model and setup the webcam
+          async function init() {
+              const modelURL = URL + "model.json";
+              const metadataURL = URL + "metadata.json";
+
+              // load the model and metadata
+              // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+              // or files from your local hard drive
+              // Note: the pose library adds "tmImage" object to your window (window.tmImage)
+              model = await tmImage.load(modelURL, metadataURL);
+              maxPredictions = model.getTotalClasses();
+
+              // Convenience function to setup a webcam
+              const flip = true; // whether to flip the webcam
+              webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
+              await webcam.setup(); // request access to the webcam
+              await webcam.play();
+              window.requestAnimationFrame(loop);
+
+              // append elements to the DOM
+              document.getElementById("webcam-container").appendChild(webcam.canvas);
+              labelContainer = document.getElementById("label-container");
+              for (let i = 0; i < maxPredictions; i++) { // and class labels
+                  labelContainer.appendChild(document.createElement("div"));
+              }
+          }
+
+          async function loop() {
+              webcam.update(); // update the webcam frame
+              await predict();
+              window.requestAnimationFrame(loop);
+          }
+
+          // run the webcam image through the image model
+          async function predict() {
+              // predict can take in an image, video or canvas html element
+              const prediction = await model.predict(webcam.canvas); 
+              for (let i = 0; i < maxPredictions; i++) {//가중치를 계속적으로 받아옴
+                  const classPrediction =
+                    prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+                  //labelContainer.childNodes[i].innerHTML = classPrediction;  
+              }
+              if(prediction[0].probability<prediction[1].probability){ // 가중치가 어느 쪽이 높은지 계산
+                  document.getElementById("result").innerHTML ='긴팔';
+              }else{
+                  document.getElementById("result").innerHTML ='반팔';
+              }
+          }
+      </script>
+
+      <!--
+      <button type="button" onclick="getLocation()">위도경도받아오기</button>
+      <button type="button" onclick="getLocation_()">GPS정보받아오기</button>
+      <div id="ima">실행순서 : 위도경도받아오기 -> GPS정보받아오기 -> 온도</div>
+      -->
+      <div>[ Weather ]</div>
+      <div id="information"> </div>
+
+      <script>
+          var temp, city, lat, lon, name, temp_max, temp_min;
+
+      const getJSON = function(url, callback) {
+          const xhr = new XMLHttpRequest();
+          xhr.open('GET', url, true);
+          xhr.responseType = 'json';
+          xhr.onload = function() {
+            const status = xhr.status;
+            if(status === 200) {
+              callback(null, xhr.response);
+            } else {
+              callback(status, xhr.response);
+            }
+          };
+          xhr.send();
+        };
+        
+      // GPS를 이용하여 위도경도를 받아오는 방식_ 정확도가 너무 떨어져서 보류
+        //http://api.openweathermap.org/data/2.5/weather?lat=&lon=&appid=4375227894b706fbc4e46675bba7a98a
+      /*
+        function getLocation_(){ // 위도경도로 검색
+        getJSON('http://api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+lon+'&appid=4375227894b706fbc4e46675bba7a98a', // 각각의 위도 경도를 입력하여 해당 위치의 날씨정보를 가져옴
+        function (err, data) {
+          if(err !== null) {
+            alert('error' + err); // 넣은 값이 오류가 생길 시 에러코드와 함께 문구발생
+          } else {
+            temp= data.main.temp-273; // 기온
+            city= data.name; // 지역이름
+          }
+        });
+      }
+          function getLocation(){ //위도경도 받아오기 
+            if (navigator.geolocation) { // GPS를 지원하면
+          navigator.geolocation.watchPosition(function(position) {
+            lat= position.coords.latitude // 위도
+            lon= position.coords.longitude // 경도;
+          }, function(error) {
+            console.error(error);
+          }, {
+            enableHighAccuracy: true, // 배터리를 소모해 더욱 더 정확한 정보 받아옴
+            maximumAge: 0,
+            timeout: Infinity
+          });
+        } else {
+          alert('GPS를 지원하지 않습니다');
+        }
+          }
+      */
+      
+        //http://api.openweathermap.org/data/2.5/weather?q=asan&appid=4375227894b706fbc4e46675bba7a98a&units=metric
+        function service(name){ // 위치를 입력받고 해당 위치의 정보 제공
+          getJSON('http://api.openweathermap.org/data/2.5/weather?q='+name+'&appid=4375227894b706fbc4e46675bba7a98a&units=metric', // 도시명을 입력하여 해당 도시의 날씨정보를 가져옴
+        function (err, data) {
+          if(err !== null) {
+            alert('error' + err); // 넣은 값이 오류가 생길 시 에러코드와 함께 문구발생
+          } else {
+            temp= data.main.temp; // 기온
+            //lat = data.coord.lat; // 위도경도를 받아오는 코드인데, 사용보류
+            //lon = data.coord.lon;
+            temp_max= data.main.temp_max; // 최고기온
+            temp_min= data.main.temp_min; // 최저기온
+            city= data.name; // 지역이름
+            document.getElementById("information").innerText="기온 : "+Math.round(temp*10)/10 // 화면 출력
+            +"\n최고 기온 : "+Math.round(temp_max*10)/10
+            +"\n최저 기온 : "+Math.round(temp_min*10)/10
+            +"\n도시 명[영문] : "+city;
+          }
+        });
+          var abc = document.getElementById('abc'); // 버튼 입력시 버튼 가리기
+          abc.style.visibility="hidden";
+        }
+      </script>
+      <table id="abc"> <!--버튼 테이블-->
+        <tr>
+          <td><button type="button" onclick="service('seoul')">서울</button></td>
+          <td><button type="button" onclick="service('bucheon')">부천</button></td>
+          <td><button type="button" onclick="service('pyeongtaek')">평택</button></td>
+        </tr>
+        <tr>
+          <td><button type="button" onclick="service('busan')">부산</button></td>
+          <td><button type="button" onclick="service('incheon')">인천</button></td>
+          <td><button type="button" onclick="service('pohang')">포항</button></td>
+        </tr>
+        <tr>
+          <td><button type="button" onclick="service('cheonan')">천안</button></td>
+          <td><button type="button" onclick="service('asan')">아산</button></td>
+          <td><button type="button" onclick="service('gongju')">공주</button></td>
+        </tr>
+      </table>
+    </div>
+  </div1>
+</body>

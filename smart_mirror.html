@@ -96,15 +96,16 @@
                   //labelContainer.childNodes[i].innerHTML = classPrediction;  
               }
               if(prediction[0].probability<prediction[1].probability){ // 가중치가 어느 쪽이 높은지 계산
-                  document.getElementById("result").innerHTML ='긴팔입니다';
-                  if(temp>0){
-                    document.getElementById("result_").innerHTML='반팔을 입어주세요';
-                  }else
-                    document.getElementById("result_").innerHTML="";
-              }else{
-                  document.getElementById("result").innerHTML ='반팔입니다';
+                document.getElementById("result").innerHTML ='반팔입니다';
                   if(temp<=0){
                     document.getElementById("result_").innerHTML='긴팔을 입어주세요';
+                  }else
+                    document.getElementById("result_").innerHTML="";
+                 
+              }else{
+                   document.getElementById("result").innerHTML ='긴팔입니다';
+                  if(temp>0){
+                    document.getElementById("result_").innerHTML='반팔을 입어주세요';
                   }else
                     document.getElementById("result_").innerHTML="";
               }

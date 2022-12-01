@@ -40,6 +40,7 @@
       <div id="webcam-container"></div>
       <div id="label-container"></div>
       <div id="result"></div>
+      <div id="result_"></div>
       <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
       <script type="text/javascript">
@@ -47,7 +48,7 @@
           // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
 
           // the link to your model provided by Teachable Machine export panel
-          const URL = "./a/"; // 모델위치를 설정하는 부분으로 교육이 완료되면 설정예정
+          const URL = "/a/"; // 모델위치를 설정하는 부분으로 교육이 완료되면 설정예정
 
           let model, webcam, labelContainer, maxPredictions;
 
@@ -94,9 +95,17 @@
                   //labelContainer.childNodes[i].innerHTML = classPrediction;  
               }
               if(prediction[0].probability<prediction[1].probability){ // 가중치가 어느 쪽이 높은지 계산
-                  document.getElementById("result").innerHTML ='긴팔';
+                  document.getElementById("result").innerHTML ='긴팔입니다';
+                  if(temp>0){
+                    document.getElementById("result_").innerHTML='반팔을 입어주세요';
+                  }else
+                    document.getElementById("result_").innerHTML="";
               }else{
-                  document.getElementById("result").innerHTML ='반팔';
+                  document.getElementById("result").innerHTML ='반팔입니다';
+                  if(temp<=0){
+                    document.getElementById("result_").innerHTML='긴팔을 입어주세요';
+                  }else
+                    document.getElementById("result_").innerHTML="";
               }
           }
       </script>
@@ -110,7 +119,7 @@
       <div id="information"> </div>
 
       <script>
-          var temp, city, lat, lon, name, temp_max, temp_min;
+          var temp="", city="", lat="", lon="", name="", temp_max="", temp_min="";
 
       const getJSON = function(url, callback) {
           const xhr = new XMLHttpRequest();
@@ -158,10 +167,10 @@
         }
           }
       */
-      
+      //1eb1d18602c0e2dde562cdc2005a4495
         //http://api.openweathermap.org/data/2.5/weather?q=asan&appid=4375227894b706fbc4e46675bba7a98a&units=metric
         function service(name){ // 위치를 입력받고 해당 위치의 정보 제공
-          getJSON('http://api.openweathermap.org/data/2.5/weather?q='+name+'&appid=4375227894b706fbc4e46675bba7a98a&units=metric', // 도시명을 입력하여 해당 도시의 날씨정보를 가져옴
+          getJSON('http://api.openweathermap.org/data/2.5/weather?q='+name+'&appid=1eb1d18602c0e2dde562cdc2005a4495&units=metric', // 도시명을 입력하여 해당 도시의 날씨정보를 가져옴
         function (err, data) {
           if(err !== null) {
             alert('error' + err); // 넣은 값이 오류가 생길 시 에러코드와 함께 문구발생

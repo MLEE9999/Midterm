@@ -1,6 +1,7 @@
 var temp, city, lat, lon, name, temp_max, temp_min;
           // 온도, 도시, 위도, 경도, 지역이름, 최고기온, 최저기온
           var city_button; // 버튼 가리기 위해 사용하는 변수
+          var init_button;
 
 
       const getJSON = function(url, callback) { // 자바스크립트에서 JSON 파일 로드과정을 입력
@@ -61,15 +62,17 @@ var temp, city, lat, lon, name, temp_max, temp_min;
             temp= data.main.temp; // 기온
             //lat = data.coord.lat; // 위도경도를 받아오는 코드인데, 사용보류
             //lon = data.coord.lon;
-            temp_max= data.main.temp_max; // 최고기온
-            temp_min= data.main.temp_min; // 최저기온
+            //temp_max= data.main.temp_max; // 최고기온 입력보류
+            //temp_min= data.main.temp_min; // 최저기온 입력보류
             city= data.name; // 지역이름
             document.getElementById("information").innerText="기온 : "+Math.round(temp*10)/10 // 화면에 기온, 최고기온, 최저기온, 지역이름을 출력하는 부분
-            +"\n최고 기온 : "+Math.round(temp_max*10)/10
-            +"\n최저 기온 : "+Math.round(temp_min*10)/10
-            +"\n도시 명[영문] : "+city;
+            //+"\n최고 기온 : "+Math.round(temp_max*10)/10
+            //+"\n최저 기온 : "+Math.round(temp_min*10)/10
+            +"\n\n도시 명[영문] : "+city;
           }
         });
           city_button = document.getElementById('city_button'); // 버튼 입력시 버튼 가리기
           city_button.style.visibility="hidden";
+          init_button = document.getElementById('init');
+          init_button.style.visibility="hidden";// hidden으로 하고 나오게 하는건 왜안되는지 확인해봐야함..................
         }

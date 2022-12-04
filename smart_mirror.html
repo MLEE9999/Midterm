@@ -1,4 +1,5 @@
 <head>
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   <style>
     @font-face {
       font-family: maple;
@@ -39,6 +40,7 @@
       <div id="webcam-container"></div>
       <div id="label-container"></div>
       <div id="result"></div>
+      <div id="result_"></div>
       <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
       <script type="text/javascript">
@@ -46,7 +48,7 @@
           // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
 
           // the link to your model provided by Teachable Machine export panel
-          const URL = "./a/"; // 모델위치를 설정하는 부분으로 교육이 완료되면 설정예정
+          const URL = "./my_model/"; // 모델위치를 설정하는 부분으로 교육이 완료되면 설정예정
 
           let model, webcam, labelContainer, maxPredictions;
 
@@ -93,18 +95,105 @@
                   //labelContainer.childNodes[i].innerHTML = classPrediction;  
               }
               if(prediction[0].probability<prediction[1].probability){ // 가중치가 어느 쪽이 높은지 계산
-                  document.getElementById("result").innerHTML ='긴팔';
+                document.getElementById("result").innerHTML ='반팔입니다';
+                  if(temp<=0){
+                    document.getElementById("result_").innerHTML='긴팔을 입어주세요';
+                  }else
+                    document.getElementById("result_").innerHTML="";
+                 
               }else{
-                  document.getElementById("result").innerHTML ='반팔';
+                   document.getElementById("result").innerHTML ='긴팔입니다';
+                  if(temp>0){
+                    document.getElementById("result_").innerHTML='반팔을 입어주세요';
+                  }else
+                    document.getElementById("result_").innerHTML="";
               }
           }
       </script>
 
       <div>[ Weather ]</div>
       <div id="information"> </div>
+<<<<<<< HEAD
       <script src="weather.js"></script> <!--날씨 정보를 받아오는 자바스크립트 파일-->
       
       <table id="city_button"> <!--버튼 테이블-->
+=======
+
+      <script>
+          var temp="", city="", lat="", lon="", name="", temp_max="", temp_min="";
+
+      const getJSON = function(url, callback) {
+          const xhr = new XMLHttpRequest();
+          xhr.open('GET', url, true);
+          xhr.responseType = 'json';
+          xhr.onload = function() {
+            const status = xhr.status;
+            if(status === 200) {
+              callback(null, xhr.response);
+            } else {
+              callback(status, xhr.response);
+            }
+          };
+          xhr.send();
+        };
+        
+      // GPS를 이용하여 위도경도를 받아오는 방식_ 정확도가 너무 떨어져서 보류
+        //http://api.openweathermap.org/data/2.5/weather?lat=&lon=&appid=4375227894b706fbc4e46675bba7a98a
+      /*
+        function getLocation_(){ // 위도경도로 검색
+        getJSON('http://api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+lon+'&appid=4375227894b706fbc4e46675bba7a98a', // 각각의 위도 경도를 입력하여 해당 위치의 날씨정보를 가져옴
+        function (err, data) {
+          if(err !== null) {
+            alert('error' + err); // 넣은 값이 오류가 생길 시 에러코드와 함께 문구발생
+          } else {
+            temp= data.main.temp-273; // 기온
+            city= data.name; // 지역이름
+          }
+        });
+      }
+          function getLocation(){ //위도경도 받아오기 
+            if (navigator.geolocation) { // GPS를 지원하면
+          navigator.geolocation.watchPosition(function(position) {
+            lat= position.coords.latitude // 위도
+            lon= position.coords.longitude // 경도;
+          }, function(error) {
+            console.error(error);
+          }, {
+            enableHighAccuracy: true, // 배터리를 소모해 더욱 더 정확한 정보 받아옴
+            maximumAge: 0,
+            timeout: Infinity
+          });
+        } else {
+          alert('GPS를 지원하지 않습니다');
+        }
+          }
+      */
+      //1eb1d18602c0e2dde562cdc2005a4495
+        //http://api.openweathermap.org/data/2.5/weather?q=asan&appid=4375227894b706fbc4e46675bba7a98a&units=metric
+        function service(name){ // 위치를 입력받고 해당 위치의 정보 제공
+          getJSON('http://api.openweathermap.org/data/2.5/weather?q='+name+'&appid=1eb1d18602c0e2dde562cdc2005a4495&units=metric', // 도시명을 입력하여 해당 도시의 날씨정보를 가져옴
+        function (err, data) {
+          if(err !== null) {
+            alert('error' + err); // 넣은 값이 오류가 생길 시 에러코드와 함께 문구발생
+          } else {
+            temp= data.main.temp; // 기온
+            //lat = data.coord.lat; // 위도경도를 받아오는 코드인데, 사용보류
+            //lon = data.coord.lon;
+            temp_max= data.main.temp_max; // 최고기온
+            temp_min= data.main.temp_min; // 최저기온
+            city= data.name; // 지역이름
+            document.getElementById("information").innerText="기온 : "+Math.round(temp*10)/10 // 화면 출력
+            +"\n최고 기온 : "+Math.round(temp_max*10)/10
+            +"\n최저 기온 : "+Math.round(temp_min*10)/10
+            +"\n도시 명[영문] : "+city;
+          }
+        });
+          var abc = document.getElementById('abc'); // 버튼 입력시 버튼 가리기
+          abc.style.visibility="hidden";
+        }
+      </script>
+      <table id="abc"> <!--버튼 테이블-->
+>>>>>>> 38c3b1ea2c053f8e3198f537a531161aa3c3da39
         <tr>
           <td><button type="button" onclick="service('seoul')">서울</button></td>
           <td><button type="button" onclick="service('bucheon')">부천</button></td>

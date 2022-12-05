@@ -68,7 +68,6 @@
                     prediction[i].className + ": " + prediction[i].probability.toFixed(2);
                   //labelContainer.childNodes[i].innerHTML = classPrediction;  
               }
-              sleep(1000);
               if(prediction[0].probability<prediction[1].probability){ // 가중치가 어느 쪽이 높은지 계산
                 document.getElementById("result").innerHTML ='반팔입니다';
                   if(temp<=0){ // 반팔을 입었는데 추울때

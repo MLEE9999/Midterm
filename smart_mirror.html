@@ -29,6 +29,9 @@
       top:30%;
       left:30%;
     }
+    .information{
+      
+    }
   </style>
   
 </head>
@@ -36,7 +39,6 @@
   <div class="div1">
     <div class="div2">
       <div>오늘의 날씨</div>
-      <button id="init" type="button" onclick="init()">Start</button>
       <div id="webcam-container"></div>
       <div id="label-container"></div>
       <div id="result"></div><!--현재 입은 복장정보-->
@@ -114,7 +116,6 @@
       <div>[ Weather ]</div>
       <div id="information"> </div>
       <script src="weather.js"></script> <!--날씨 정보를 받아오는 자바스크립트 파일-->
-      
       <table id="city_button"> <!--버튼 테이블-->
         <tr>
           <td><button type="button" onclick="service('seoul')">서울</button></td>
@@ -132,6 +133,7 @@
           <td><button type="button" onclick="service('gongju')">공주</button></td>
         </tr>
       </table>
+      <button id="init" type="button" onclick="init()" hidden>Start</button>
     </div>
   </div1>
 </body>

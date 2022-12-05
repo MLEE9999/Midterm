@@ -74,5 +74,5 @@ var temp, city, lat, lon, name, temp_max, temp_min;
           city_button = document.getElementById('city_button'); // 버튼 입력시 버튼 가리기
           city_button.style.visibility="hidden";
           init_button = document.getElementById('init');
-          init_button.style.visibility="visible";// hidden으로 하고 나오게 하는건 왜안되는지 확인해봐야함..................
+          //init_button.style.visibility="visible";// hidden으로 하고 나오게 하는건 왜안되는지 확인해봐야함..................
         }

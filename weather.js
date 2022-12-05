@@ -65,10 +65,10 @@ var temp, city, lat, lon, name, temp_max, temp_min;
             //temp_max= data.main.temp_max; // 최고기온 입력보류
             //temp_min= data.main.temp_min; // 최저기온 입력보류
             city= data.name; // 지역이름
-            document.getElementById("information").innerText="기온 : "+Math.round(temp*10)/10 // 화면에 기온, 최고기온, 최저기온, 지역이름을 출력하는 부분
+            document.getElementById("information").innerText=
+            city +"\n기온 : "+Math.round(temp*10)/10; // 화면에 기온, 최고기온, 최저기온, 지역이름을 출력하는 부분
             //+"\n최고 기온 : "+Math.round(temp_max*10)/10
             //+"\n최저 기온 : "+Math.round(temp_min*10)/10
-            +"\n\n도시 명[영문] : "+city;
           }
         });
           city_button = document.getElementById('city_button'); // 버튼 입력시 버튼 가리기

@@ -1,9 +1,8 @@
 var temp, city, lat, lon, name, temp_max, temp_min;
           // 온도, 도시, 위도, 경도, 지역이름, 최고기온, 최저기온
       var city_button; // 버튼 가리기 위해 사용하는 변수
-      var init_button;
-      var result;
-      var result_;
+      var result; // 결과 내용 입력 변수
+      var result_; // 결과 내용 입력 변수
 
       const getJSON = function(url, callback) { // 자바스크립트에서 JSON 파일 로드과정을 입력
           const xhr = new XMLHttpRequest();
@@ -73,13 +72,9 @@ var temp, city, lat, lon, name, temp_max, temp_min;
           }
         });
           city_button = document.getElementById('city_button'); // 버튼 입력시 버튼 가리기
-          city_button.style.visibility="hidden";
-          init_button = document.getElementById('init');
-          //init_button.style.visibility="visible";
+          city_button.style.visibility="hidden"; // 버튼 중복 입력 방지
           
           result=document.getElementById("result_")
           result_=document.getElementById("result")
-          result.style.visibility="hidden";
-          result_.style.visibility="hidden";
           init();
         }

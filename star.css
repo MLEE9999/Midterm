@@ -39,15 +39,12 @@
     
   }
   button{
-     /* width:200px;
-    /* border-radius: 7%; */
     width: 200px;
     height: 70px;
     cursor:pointer;
     font-size:40;
     border: 2px solid;
     border-color: rgba(228, 228, 228, 0);
-    /* background-color: rgba(0,0,0,0); */
     background-image: linear-gradient(to right, #8d8d8d 0%, #d8d8d8 51%, #a7a7a7 100%);
     color:rgb(53, 53, 53); 
     transition: all 0.9s, color 0.3; 
@@ -58,8 +55,6 @@
     transition:0.2s; 
   }
   button:active{
-    /* background-color:rgb(94, 94, 94); */
-    /* border-color:rgb(90, 89, 89); */
     color:rgb(95, 95, 95);
     transition:0.2s;
   }
@@ -73,16 +68,4 @@
     margin-left: auto;
     margin-right: auto;
     border-spacing:30px;
-  }
-  #nul{
-    
-  }
-  .center_{
-    
-  }
-  .center__{
-    
-  }
-  .information{
-    
   }

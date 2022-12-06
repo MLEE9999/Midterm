@@ -34,6 +34,10 @@
     top:12%;
     left:25%;
     justify-content: center;
+    float:left;
+  }
+  .webcam-container{
+    float:right;
   }
   button{
      /* width:200px;

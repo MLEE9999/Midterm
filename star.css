@@ -37,6 +37,7 @@
     float:left;
   }
   .webcam-container{
+    align-content: center;
     float:right;
   }
   button{

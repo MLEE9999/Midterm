@@ -27,17 +27,18 @@
   }
   .div2{
     width:800px;
-    height: auto;
+    height: 850px;
     text-align:center;
     color:#000000;
-    position:relative;
+    position:absolute;
     top:12%;
     left:25%;
     justify-content: center;
-    
   }
   .webcam-container{
-    
+    width:0.5rem;
+    height:1000px;
+    display:inline-block;
   }
   button{
      /* width:200px;

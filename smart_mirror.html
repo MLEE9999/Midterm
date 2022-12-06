@@ -71,14 +71,14 @@
               }
               if(prediction[0].probability<prediction[1].probability){ // 가중치가 어느 쪽이 높은지 계산
                 document.getElementById("result").innerHTML ='반팔입니다';
-                  if(temp<=0){ // 반팔을 입었는데 추울때
+                  if(temp<=3){ // 반팔을 입었는데 추울때
                     document.getElementById("result_").innerHTML='긴팔을 입어주세요';
                   }else // 문구 비우기
                     document.getElementById("result_").innerHTML="";
                  
               }else{
                    document.getElementById("result").innerHTML ='긴팔입니다';
-                  if(temp>0){ // 긴팔을 었는데 더울때
+                  if(temp>3){ // 긴팔을 었는데 더울때
                     document.getElementById("result_").innerHTML='반팔을 입어주세요';
                   }else // 문구 비우기
                     document.getElementById("result_").innerHTML="";
